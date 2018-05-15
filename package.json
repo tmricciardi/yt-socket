@@ -1,0 +1,9 @@
+{
+  "name": "yt-socket",
+  "version": "0.0.1",
+  "description": "Web page that syncs youtube videos to users in real time.",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
