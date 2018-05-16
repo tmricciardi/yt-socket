@@ -20,13 +20,19 @@ io.on("connect", user => {
 
   //Play
   user.on("play", () => {
-    console.log(`${user.id} hit play`);
+    console.log(`${user.id} is playing the video.`);
     io.emit("userPlay");
   });
 
   //Pause
   user.on("pause", () => {
-    console.log(`${user.id} hit pause`);
+    console.log(`${user.id} has paused the video.`);
     io.emit("userPause");
+  });
+
+  //Sync
+  user.on("sync", userTime => {
+    console.log(`${user.id} has sync'd the video.`);
+    io.emit("userSync", userTime);
   });
 });
