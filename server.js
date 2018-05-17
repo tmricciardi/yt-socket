@@ -1,4 +1,5 @@
-let app = require("express")();
+let express = require("express");
+let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
 let port = process.env.PORT || 3000;
@@ -6,6 +7,8 @@ let port = process.env.PORT || 3000;
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
+
+app.use("/scripts", express.static(__dirname + "/scripts"));
 
 http.listen(port, function() {
   console.log("listening on *:" + port);
