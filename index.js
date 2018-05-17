@@ -35,4 +35,10 @@ io.on("connect", user => {
     console.log(`${user.id} has sync'd the video.`);
     io.emit("userSync", userTime);
   });
+
+  //New Video
+  user.on("video", userVideo => {
+    console.log(`${user.id} has changed the video.`);
+    io.emit("changeVideo", userVideo);
+  });
 });

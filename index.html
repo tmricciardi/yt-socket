@@ -21,6 +21,8 @@
         <button id="playBtn">Play</button>
         <button id="pauseBtn">Pause</button>
         <button id="syncBtn">Sync</button>
+        <input type="text" id="IdInput" placeholder="Enter Youtube Video ID" />
+        <button id="IdBtn">New Video</button>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -43,7 +45,7 @@
             player = new YT.Player('player', {
                 height: '390',
                 width: '640',
-                videoId: 'M7lc1UVf-VE',
+                videoId: "M7lc1UVf-VE",
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -107,6 +109,13 @@
             player.seekTo(userTime);
         });
 
+        $("#IdBtn").on("click", () => {
+            userVideo = $("#IdInput").val();
+            socket.emit("video", userVideo);
+        });
+        socket.on("changeVideo", (userVideo) => {
+            player.loadVideoById(userVideo, 0, "default");
+        });
     </script>
 
 </body>
