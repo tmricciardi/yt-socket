@@ -9,6 +9,7 @@ app.get("/", function(req, res) {
 });
 
 app.use("/scripts", express.static(__dirname + "/scripts"));
+app.use("/styles", express.static(__dirname + "/styles"));
 
 http.listen(port, function() {
   console.log("listening on *:" + port);
@@ -18,7 +19,7 @@ io.on("connect", user => {
   //User ID
   console.log(`User ${user.id} has connected`);
   user.on("disconnect", () => {
-    console.log(`User ${user.id} has disconnected`);
+    console.log(`User ${user.id} has disconnected.`);
   });
 
   //Play
@@ -40,8 +41,22 @@ io.on("connect", user => {
   });
 
   //New Video
-  user.on("video", userVideo => {
-    console.log(`${user.id} has changed the video.`);
-    io.emit("changeVideo", userVideo);
+  user.on("newVideo", userNewVideo => {
+    console.log(`${user.id} has started a new video.`);
+    io.emit("changeVideo", userNewVideo);
+  });
+
+  /*
+  //Add Video
+  user.on("addVideo", userAddVideo => {
+    console.log(`${user.id} has added a new video.`);
+    io.emit("addVideo", userAddVideo);
+  });
+  */
+
+  //Chat
+  user.on("chatMessage", function(msg) {
+    console.log(`${user.id} sent a message.`);
+    io.emit("chatMessage", msg);
   });
 });

@@ -22,7 +22,7 @@ function onYouTubeIframeAPIReady() {
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
-  event.target.playVideo();
+  //event.target.playVideo();
 }
 
 function onPlayerStateChange(event) {
@@ -57,11 +57,36 @@ socket.on("userSync", userTime => {
 });
 
 //New Video
-$("#IdBtn").on("click", () => {
-  userVideo = $("#IdInput").val();
-  socket.emit("video", userVideo);
+$("#newVideoBtn").on("click", () => {
+  userNewVideo = $("#idInput").val();
+  socket.emit("newVideo", userNewVideo);
 });
 
-socket.on("changeVideo", userVideo => {
-  player.loadVideoById(userVideo, 0, "default");
+socket.on("changeVideo", userNewVideo => {
+  player.loadVideoById(userNewVideo, 0, "default");
+});
+
+/*
+//Add Video
+$("#addVideoBtn").on("click", () => {
+  userAddVideo = $("#idInput").val();
+  socket.emit("addVideo", userAddVideo);
+});
+
+socket.on("addVideo", userAddVideo => {
+  player.cueVideoById(userAddVideo, 0, "default");
+});
+*/
+
+//Chat
+$(() => {
+  $("#chatBoxWrapper").submit(function() {
+    socket.emit("chatMessage", $("#chatBox").val());
+    $("#chatBox").val("");
+    return false;
+  });
+
+  socket.on("chatMessage", function(msg) {
+    $("#messages").append($("<li>").text(msg));
+  });
 });
