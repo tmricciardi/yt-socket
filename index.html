@@ -7,10 +7,12 @@
 <body>
     <div id="wrapper">
         <div id="video">
-            <div id="player"></div>
-            <div>
+            <div id="playerWrapper">
+                <div id="player"></div>
+            </div>
+            <div id="buttonWrapper">
                 <button id="syncBtn">Sync</button>
-                <input type="text" id="idInput" placeholder="Enter Youtube Video ID" />
+                <input type="text" id="idInput" autocomplete="off" placeholder="Enter Youtube Video ID" />
                 <button id="newVideoBtn">Play Video</button>
                 <!--<button id="addVideoBtn">Add Video</button>-->
             </div>
@@ -18,7 +20,7 @@
         <div id="chat">
             <ul id="messages"></ul>
             <form id="chatBoxWrapper" action="">
-                <input id="chatBox" autocomplete="off" />
+                <input id="chatBox" autocomplete="off" placeholder="Send a message" />
                 <button id="send">Send</button>
             </form>
         </div>

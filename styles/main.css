@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  background-color: #e8edee;
+  text-decoration-color: #3b3b3b;
 }
 
 #wrapper {
@@ -11,53 +13,94 @@ body {
 #video {
   width: 80%;
   min-width: 80%;
-  background-color: #fafafa;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+#playerWrapper {
+  width: 100%;
+  height: 96%;
+  overflow: hidden;
+}
+
+#buttonWrapper {
+  width: 100%;
+  height: 4%;
+  min-height: 4%;
+  display: flex;
+}
+
+#syncBtn {
+  width: 20%;
+  height: 100%;
+  border: none;
+  background-color: #ffdd8f;
+}
+
+#idInput {
+  width: 60%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  text-align: center;
+  background-color: #e8edee;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#newVideoBtn {
+  width: 20%;
+  height: 100%;
+  border: none;
+  background-color: #49e1b9;
 }
 
 #chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   width: 20%;
   min-width: 20%;
 }
 
 #messages {
-  width: 100%;
+  width: auto;
   height: 96%;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background-color: lightgrey;
+  background-color: #d1dbde;
   overflow-y: auto;
   overflow-wrap: break-word;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
   list-style-type: none;
 }
 
 #messages li {
   padding: 2.5% 5%;
 }
-#messages li:nth-child(even) {
-  background-color: #f6f6f6;
+#messages li:nth-child(odd) {
+  background-color: #bbc9ce;
 }
 
 #chatBoxWrapper {
   width: 100%;
   height: 4%;
+  min-height: 4%;
   display: flex;
   margin: 0;
+  overflow: hidden;
 }
 
 #chatBox {
   width: 80%;
-  min-width: 80%;
   border: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #e8edee;
 }
 
 #send {
   width: 20%;
-  min-width: 20%;
   border: none;
+  background-color: #51a9c7;
 }
