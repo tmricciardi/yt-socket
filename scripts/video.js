@@ -58,8 +58,22 @@ socket.on("userSync", userTime => {
 
 //New Video
 $("#newVideoBtn").on("click", () => {
-  userNewVideo = $("#idInput").val();
-  socket.emit("newVideo", userNewVideo);
+  let idTest = $("#idInput").val();
+  //Finds ID for https://www.youtube.com/watch?v=
+  let idRegex1 = /(\?|&)v=([^&#]+)/;
+  //Finds ID for https://youtu.be/
+  let idRegex2 = /(\.be\/)+([^\/]+)/;
+
+  if (idRegex1.test(idTest)) {
+    userNewVideo = idTest.match(idRegex1).pop();
+    socket.emit("newVideo", userNewVideo);
+  } else if (idRegex2.test(idTest)) {
+    userNewVideo = idTest.match(idRegex2).pop();
+    socket.emit("newVideo", userNewVideo);
+  } else {
+    userNewVideo = $("#idInput").val();
+    socket.emit("newVideo", userNewVideo);
+  }
 });
 
 socket.on("changeVideo", userNewVideo => {
