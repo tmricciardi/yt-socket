@@ -1,4 +1,4 @@
-let socket = io();
+const socket = io();
 
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
@@ -37,12 +37,12 @@ function onPlayerStateChange(event) {
 }
 
 //Play
-socket.on("userPlay", function(message) {
+socket.on("userPlay", () => {
   player.playVideo();
 });
 
 //Pause
-socket.on("userPause", function(message) {
+socket.on("userPause", () => {
   player.pauseVideo();
 });
 
@@ -65,18 +65,6 @@ $("#newVideoBtn").on("click", () => {
 socket.on("changeVideo", userNewVideo => {
   player.loadVideoById(userNewVideo, 0, "default");
 });
-
-/*
-//Add Video
-$("#addVideoBtn").on("click", () => {
-  userAddVideo = $("#idInput").val();
-  socket.emit("addVideo", userAddVideo);
-});
-
-socket.on("addVideo", userAddVideo => {
-  player.cueVideoById(userAddVideo, 0, "default");
-});
-*/
 
 //Chat
 $(() => {

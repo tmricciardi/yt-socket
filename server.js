@@ -3,6 +3,7 @@ let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
 let port = process.env.PORT || 3000;
+const debounce = require("lodash/debounce");
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
@@ -15,48 +16,72 @@ http.listen(port, function() {
   console.log("listening on *:" + port);
 });
 
+let count = 0;
 io.on("connect", user => {
-  //User ID
-  console.log(`User ${user.id} has connected`);
+  count++;
+  console.log(`User ${user.id} has connected. ${count} Connected.`);
   user.on("disconnect", () => {
-    console.log(`User ${user.id} has disconnected.`);
+    count--;
+    console.log(`User ${user.id} has disconnected. ${count} Connected.`);
   });
 
   //Play
-  user.on("play", () => {
-    console.log(`${user.id} is playing the video.`);
-    io.emit("userPlay");
-  });
+  user.on(
+    "play",
+    debounce(
+      () => {
+        io.emit("userPlay");
+      },
+      1000,
+      { leading: true, trailing: false }
+    )
+  );
 
   //Pause
-  user.on("pause", () => {
-    console.log(`${user.id} has paused the video.`);
-    io.emit("userPause");
-  });
+  user.on(
+    "pause",
+    debounce(
+      () => {
+        io.emit("userPause");
+      },
+      1000,
+      { leading: true, trailing: false }
+    )
+  );
 
   //Sync
-  user.on("sync", userTime => {
-    console.log(`${user.id} has sync'd the video.`);
-    io.emit("userSync", userTime);
-  });
+  user.on(
+    "sync",
+    debounce(
+      userTime => {
+        io.emit("userSync", userTime);
+      },
+      1000,
+      { leading: true, trailing: false }
+    )
+  );
 
   //New Video
-  user.on("newVideo", userNewVideo => {
-    console.log(`${user.id} has started a new video.`);
-    io.emit("changeVideo", userNewVideo);
-  });
-
-  /*
-  //Add Video
-  user.on("addVideo", userAddVideo => {
-    console.log(`${user.id} has added a new video.`);
-    io.emit("addVideo", userAddVideo);
-  });
-  */
+  user.on(
+    "newVideo",
+    debounce(
+      userNewVideo => {
+        io.emit("changeVideo", userNewVideo);
+      },
+      1000,
+      { leading: true, trailing: false }
+    )
+  );
 
   //Chat
-  user.on("chatMessage", function(msg) {
-    console.log(`${user.id} sent a message.`);
-    io.emit("chatMessage", msg);
-  });
+  user.on(
+    "chatMessage",
+    debounce(
+      function(msg) {
+        io.emit("chatMessage", msg);
+      },
+      500,
+      { leading: true, trailing: false }
+    )
+  );
 });
