@@ -92,3 +92,8 @@ $(() => {
     $("#messages").append($("<li>").text(msg));
   });
 });
+
+//Total connected
+socket.on("viewerUpdate", function(count) {
+  $("#viewers").text(count);
+});

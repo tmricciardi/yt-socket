@@ -16,16 +16,16 @@ http.listen(port, function() {
   console.log("listening on *:" + port);
 });
 
-let count = 0;
+let userCount = 0;
 io.on("connect", user => {
-  count++;
-  console.log(`User ${user.id} has connected. ${count} Connected.`);
+  io.emit("viewerUpdate", ++userCount);
+  console.log(`User ${user.id} has connected. ${userCount} Connected.`);
+
   user.on("disconnect", () => {
-    count--;
-    console.log(`User ${user.id} has disconnected. ${count} Connected.`);
+    io.emit("viewerUpdate", --userCount);
+    console.log(`User ${user.id} has disconnected. ${userCount} Connected.`);
   });
 
-  //Play
   user.on(
     "play",
     debounce(
