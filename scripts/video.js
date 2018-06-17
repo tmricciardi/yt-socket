@@ -1,4 +1,11 @@
-const socket = io();
+const socket = io(),
+  $syncBtn = $("#syncBtn"),
+  $playForm = $("#playForm"),
+  $idInput = $("#idInput"),
+  $chatForm = $("#chatForm"),
+  $chatInput = $("#chatInput"),
+  $messages = $("#messages"),
+  $viewers = $("#viewers");
 
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
@@ -47,7 +54,7 @@ socket.on("userPause", () => {
 });
 
 //Sync
-$("#syncBtn").on("click", () => {
+$syncBtn.on("click", () => {
   let userTime = player.getCurrentTime();
   socket.emit("sync", userTime);
 });
@@ -57,21 +64,21 @@ socket.on("userSync", userTime => {
 });
 
 //New Video
-$("#newVideoBtn").on("click", () => {
-  let idTest = $("#idInput").val();
+$playForm.submit(() => {
+  let idInputVal = $idInput.val();
   //Finds ID for https://www.youtube.com/watch?v=
   let idRegex1 = /(\?|&)v=([^&#]+)/;
   //Finds ID for https://youtu.be/
   let idRegex2 = /(\.be\/)+([^\/]+)/;
 
-  if (idRegex1.test(idTest)) {
-    userNewVideo = idTest.match(idRegex1).pop();
+  if (idRegex1.test(idInputVal)) {
+    userNewVideo = idInputVal.match(idRegex1).pop();
     socket.emit("newVideo", userNewVideo);
-  } else if (idRegex2.test(idTest)) {
-    userNewVideo = idTest.match(idRegex2).pop();
+  } else if (idRegex2.test(idInputVal)) {
+    userNewVideo = idInputVal.match(idRegex2).pop();
     socket.emit("newVideo", userNewVideo);
   } else {
-    userNewVideo = $("#idInput").val();
+    userNewVideo = $idInput.val();
     socket.emit("newVideo", userNewVideo);
   }
 });
@@ -81,19 +88,18 @@ socket.on("changeVideo", userNewVideo => {
 });
 
 //Chat
-$(() => {
-  $("#chatBoxWrapper").submit(function() {
-    socket.emit("chatMessage", $("#chatBox").val());
-    $("#chatBox").val("");
-    return false;
-  });
 
-  socket.on("chatMessage", function(msg) {
-    $("#messages").append($("<li>").text(msg));
-  });
+$chatForm.submit(() => {
+  socket.emit("chatMessage", $chatInput.val());
+  $chatInput.val("");
+  return false;
+});
+
+socket.on("chatMessage", msg => {
+  $messages.append($("<li>").text(msg));
 });
 
 //Total connected
 socket.on("viewerUpdate", function(count) {
-  $("#viewers").text(count);
+  $viewers.text(count);
 });

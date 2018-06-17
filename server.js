@@ -1,32 +1,32 @@
-let express = require("express");
-let app = express();
-let http = require("http").Server(app);
-let io = require("socket.io")(http);
-let port = process.env.PORT || 3000;
+let express = require("express"),
+  app = express(),
+  http = require("http").Server(app),
+  io = require("socket.io")(http),
+  port = process.env.PORT || 3000;
 const debounce = require("lodash/debounce");
 
-app.get("/", function(req, res) {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
 app.use("/scripts", express.static(__dirname + "/scripts"));
 app.use("/styles", express.static(__dirname + "/styles"));
 
-http.listen(port, function() {
+http.listen(port, () => {
   console.log("listening on *:" + port);
 });
 
 let userCount = 0;
-io.on("connect", user => {
+io.on("connect", socket => {
   io.emit("viewerUpdate", ++userCount);
-  console.log(`User ${user.id} has connected. ${userCount} Connected.`);
+  console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
 
-  user.on("disconnect", () => {
+  socket.on("disconnect", () => {
     io.emit("viewerUpdate", --userCount);
-    console.log(`User ${user.id} has disconnected. ${userCount} Connected.`);
+    console.log(`User ${socket.id} has disconnected. ${userCount} Connected.`);
   });
 
-  user.on(
+  socket.on(
     "play",
     debounce(
       () => {
@@ -38,7 +38,7 @@ io.on("connect", user => {
   );
 
   //Pause
-  user.on(
+  socket.on(
     "pause",
     debounce(
       () => {
@@ -50,7 +50,7 @@ io.on("connect", user => {
   );
 
   //Sync
-  user.on(
+  socket.on(
     "sync",
     debounce(
       userTime => {
@@ -62,7 +62,7 @@ io.on("connect", user => {
   );
 
   //New Video
-  user.on(
+  socket.on(
     "newVideo",
     debounce(
       userNewVideo => {
@@ -74,10 +74,10 @@ io.on("connect", user => {
   );
 
   //Chat
-  user.on(
+  socket.on(
     "chatMessage",
     debounce(
-      function(msg) {
+      msg => {
         io.emit("chatMessage", msg);
       },
       500,
