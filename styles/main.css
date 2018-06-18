@@ -15,6 +15,10 @@ input {
   display: flex;
 }
 
+.blur {
+  filter: blur(10px);
+}
+
 #wrapper {
   height: 100%;
   width: 100%;
@@ -63,6 +67,25 @@ input {
 
 #chatWrapper {
   width: 20%;
+  overflow: hidden;
+}
+
+#nameForm {
+  width: 20%;
+  height: 100%;
+  position: absolute;
+  justify-content: center;
+  z-index: 99;
+  background-color: #2a2a2a;
+  opacity: 0.5;
+}
+
+#nameInput {
+  width: 80%;
+  height: 4%;
+  text-align: center;
+  position: relative;
+  top: 50%;
 }
 
 #messages {

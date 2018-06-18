@@ -20,8 +20,11 @@
             </div>
         </div>
         <div id="chatWrapper">
-            <ul id="messages" class="flex"></ul>
-            <form id="chatForm" class="flex" action="">
+            <form id="nameForm" class="flex" onsubmit="return false">
+                <input type="text" id="nameInput" autocomplete="off" placeholder="What's your name? (Limit 14)" maxlength="14" />
+            </form>
+            <ul id="messages" class="flex blur"></ul>
+            <form id="chatForm" class="flex blur" onsubmit="return false">
                 <input type="text" id="chatInput" autocomplete="off" placeholder="Send a message (Limit 140)" maxlength="140" />
                 <input type="submit" id="chatBtn" value="►" />
             </form>

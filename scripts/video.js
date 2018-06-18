@@ -2,6 +2,8 @@ const socket = io(),
   $syncBtn = $("#syncBtn"),
   $playForm = $("#playForm"),
   $idInput = $("#idInput"),
+  $nameForm = $("#nameForm"),
+  $nameInput = $("#nameInput"),
   $chatForm = $("#chatForm"),
   $chatInput = $("#chatInput"),
   $messages = $("#messages"),
@@ -87,12 +89,29 @@ socket.on("changeVideo", userNewVideo => {
   player.loadVideoById(userNewVideo, 0, "default");
 });
 
-//Chat
+//Username
+let username;
+let $currentInput = $nameInput.focus();
 
+$nameForm.submit(() => {
+  username = $nameInput.val();
+
+  if (username) {
+    $nameForm.fadeOut();
+    $messages.removeClass("blur");
+    $chatForm.removeClass("blur");
+    $currentInput = $chatInput.focus();
+  }
+});
+
+//Chat
 $chatForm.submit(() => {
-  socket.emit("chatMessage", $chatInput.val());
-  $chatInput.val("");
-  return false;
+  message = $chatInput.val();
+
+  if (message) {
+    $chatInput.val("");
+    socket.emit("chatMessage", `${username}: ${message}`);
+  }
 });
 
 socket.on("chatMessage", msg => {
