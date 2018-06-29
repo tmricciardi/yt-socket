@@ -18,7 +18,9 @@ http.listen(port, () => {
 
 let userCount = 0;
 let currentVideo = "";
+let currentTime = 0;
 io.on("connect", socket => {
+  //Viewer Count
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
 
@@ -27,6 +29,7 @@ io.on("connect", socket => {
     console.log(`User ${socket.id} has disconnected. ${userCount} Connected.`);
   });
 
+  //Play
   socket.on(
     "play",
     debounce(
@@ -74,9 +77,15 @@ io.on("connect", socket => {
       { leading: true, trailing: false }
     )
   );
+
   //New Video on connect
   socket.on("newConnection", () => {
     io.emit("connectVideo", currentVideo);
+  });
+
+  //New Time
+  socket.on("newTime", currentTime => {
+    io.emit("connectTime", currentTime);
   });
 
   //Chat

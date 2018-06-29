@@ -49,6 +49,9 @@ function onPlayerStateChange(event) {
           player.loadVideoById(currentVideo, 0, "default");
         }
       });
+      socket.on("connectTime", time => {
+        player.seekTo(time);
+      });
   }
 }
 
@@ -73,6 +76,7 @@ socket.on("userSync", userTime => {
 });
 
 //New Video
+let currentTime = "";
 $playForm.submit(() => {
   let idInputVal = $idInput.val();
   //Finds ID for https://www.youtube.com/watch?v=
@@ -92,6 +96,11 @@ $playForm.submit(() => {
       socket.emit("newVideo", userNewVideo);
     }
   }
+
+  setInterval(() => {
+    currentTime = player.getCurrentTime();
+    socket.emit("newTime", currentTime);
+  }, 5000);
 });
 
 socket.on("changeVideo", userNewVideo => {
