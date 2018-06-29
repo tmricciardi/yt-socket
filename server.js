@@ -17,6 +17,7 @@ http.listen(port, () => {
 });
 
 let userCount = 0;
+let currentVideo = "";
 io.on("connect", socket => {
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
@@ -67,11 +68,16 @@ io.on("connect", socket => {
     debounce(
       userNewVideo => {
         io.emit("changeVideo", userNewVideo);
+        currentVideo = userNewVideo;
       },
       1000,
       { leading: true, trailing: false }
     )
   );
+  //New Video on connect
+  socket.on("newConnection", () => {
+    io.emit("connectVideo", currentVideo);
+  });
 
   //Chat
   socket.on(

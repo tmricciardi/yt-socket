@@ -31,7 +31,7 @@ function onYouTubeIframeAPIReady() {
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
-  //event.target.playVideo();
+  player.stopVideo();
 }
 
 function onPlayerStateChange(event) {
@@ -42,6 +42,13 @@ function onPlayerStateChange(event) {
     case 2:
       socket.emit("pause");
       break;
+    case 5:
+      socket.emit("newConnection");
+      socket.on("connectVideo", currentVideo => {
+        if (event.target.getPlayerState() == 5) {
+          player.loadVideoById(currentVideo, 0, "default");
+        }
+      });
   }
 }
 
@@ -80,8 +87,10 @@ $playForm.submit(() => {
     userNewVideo = idInputVal.match(idRegex2).pop();
     socket.emit("newVideo", userNewVideo);
   } else {
-    userNewVideo = $idInput.val();
-    socket.emit("newVideo", userNewVideo);
+    if ($idInput.val()) {
+      userNewVideo = $idInput.val();
+      socket.emit("newVideo", userNewVideo);
+    }
   }
 });
 
