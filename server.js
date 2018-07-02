@@ -85,8 +85,7 @@ io.on("connect", socket => {
 
   //New Video on connect
   socket.on("newConnection", () => {
-    io.emit("connectVideo", currentVideo);
-    io.emit("connectTime", currentTime);
+    io.emit("connectVideo", { currentVideo, currentTime });
   });
 
   //Chat

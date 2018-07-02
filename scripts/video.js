@@ -44,13 +44,13 @@ function onPlayerStateChange(event) {
       break;
     case 5:
       socket.emit("newConnection");
-      socket.on("connectVideo", currentVideo => {
+      socket.on("connectVideo", data => {
+        currentVideo = data.currentVideo;
+        currentTime = data.currentTime;
         if (event.target.getPlayerState() == 5) {
-          player.loadVideoById(currentVideo, 0, "default");
+          player.loadVideoById(currentVideo, currentTime, "default");
+          console.log(currentVideo, currentTime);
         }
-      });
-      socket.on("connectTime", currentTime => {
-        player.seekTo(currentTime);
       });
   }
 }
