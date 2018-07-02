@@ -78,13 +78,14 @@ io.on("connect", socket => {
     )
   );
 
+  //New Time
+  socket.on("newTime", userNewTime => {
+    currentTime = userNewTime;
+  });
+
   //New Video on connect
   socket.on("newConnection", () => {
     io.emit("connectVideo", currentVideo);
-  });
-
-  //New Time
-  socket.on("newTime", currentTime => {
     io.emit("connectTime", currentTime);
   });
 
