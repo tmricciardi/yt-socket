@@ -1,5 +1,10 @@
-body {
+* {
   margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
   text-decoration-color: #3b3b3b;
 }
 
@@ -29,6 +34,7 @@ input {
   top: 10;
   right: 10;
   color: #ef3d47;
+  z-index: 999;
 }
 
 #videoWrapper {
@@ -104,6 +110,7 @@ input {
 #messages li {
   padding: 2.5% 5%;
 }
+
 #messages li:nth-child(odd) {
   background-color: #bbc9ce;
 }

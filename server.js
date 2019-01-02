@@ -36,8 +36,10 @@ io.on("connect", socket => {
       () => {
         io.emit("userPlay");
       },
-      1000,
-      { leading: true, trailing: false }
+      1000, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 
@@ -48,8 +50,10 @@ io.on("connect", socket => {
       () => {
         io.emit("userPause");
       },
-      1000,
-      { leading: true, trailing: false }
+      1000, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 
@@ -60,8 +64,10 @@ io.on("connect", socket => {
       userTime => {
         io.emit("userSync", userTime);
       },
-      1000,
-      { leading: true, trailing: false }
+      1000, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 
@@ -73,8 +79,10 @@ io.on("connect", socket => {
         io.emit("changeVideo", userNewVideo);
         currentVideo = userNewVideo;
       },
-      1000,
-      { leading: true, trailing: false }
+      1000, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 
@@ -85,7 +93,10 @@ io.on("connect", socket => {
 
   //New Video on connect
   socket.on("newConnection", () => {
-    io.emit("connectVideo", { currentVideo, currentTime });
+    io.emit("connectVideo", {
+      currentVideo,
+      currentTime
+    });
   });
 
   //Chat
@@ -95,8 +106,10 @@ io.on("connect", socket => {
       msg => {
         io.emit("chatMessage", msg);
       },
-      500,
-      { leading: true, trailing: false }
+      500, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 });

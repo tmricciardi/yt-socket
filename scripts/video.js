@@ -17,6 +17,7 @@ var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 var player;
+
 function onYouTubeIframeAPIReady() {
   player = new YT.Player("player", {
     height: "100%",
@@ -136,6 +137,6 @@ socket.on("chatMessage", msg => {
 });
 
 //Total connected
-socket.on("viewerUpdate", function(count) {
+socket.on("viewerUpdate", function (count) {
   $viewers.text(count);
 });
