@@ -5,36 +5,48 @@
 }
 
 body {
-  text-decoration-color: #3b3b3b;
+  color: #EEEEEE;
+}
+
+body.lightMode {
+  color: #282828;
 }
 
 input {
   border: none;
   padding-left: 1rem;
   padding-right: 1rem;
-  background-color: #e8edee;
+  background-color: #282828;
+  color: #EEEEEE;
   overflow: hidden;
+  outline-style: none;
+}
+
+input.lightMode {
+  background-color: #d6d6d6;
+  color: #282828;
+}
+
+input:hover {
+  filter: brightness(80%);
+}
+
+input[type=submit] {
+  font-weight: bold;
+  color: #EEEEEE;
+}
+
+input[type=submit]:active {
+  filter: brightness(50%);
 }
 
 .flex {
   display: flex;
 }
 
-.blur {
-  filter: blur(10px);
-}
-
 #wrapper {
   height: 100%;
   width: 100%;
-}
-
-#viewers {
-  position: absolute;
-  top: 10;
-  right: 10;
-  color: #ef3d47;
-  z-index: 999;
 }
 
 #videoWrapper {
@@ -58,7 +70,7 @@ input {
 
 #syncBtn {
   width: 20%;
-  background-color: #ffdd8f;
+  background-color: #f44336;
 }
 
 #idInput {
@@ -68,7 +80,7 @@ input {
 
 #playBtn {
   width: 20%;
-  background-color: #49e1b9;
+  background-color: #4CAF50;
 }
 
 #chatWrapper {
@@ -76,30 +88,62 @@ input {
   overflow: hidden;
 }
 
+#viewersWrapper {
+  width: 20%;
+  height: 4%;
+  position: absolute;
+  top: 0;
+  background-color: #282828;
+  text-align: center;
+  overflow: hidden;
+}
+
+#viewersWrapper.lightMode {
+  background-color: #d6d6d6;
+}
+
+#viewers {
+  width: 80%;
+  height: 100%;
+  color: #ef5350;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+}
+
+#toggleBtn {
+  width: 20%;
+  justify-content: center;
+}
+
 #nameForm {
   width: 20%;
-  height: 100%;
+  height: 4%;
   position: absolute;
-  justify-content: center;
-  z-index: 99;
-  background-color: #2a2a2a;
-  opacity: 0.5;
+  bottom: 0;
 }
 
 #nameInput {
   width: 80%;
-  height: 4%;
-  text-align: center;
+}
+
+#nameInput::placeholder {
+  color: #ef5350
+}
+
+#nameBtn {
+  width: 20%;
   position: relative;
-  top: 50%;
+  background-color: #2196F3;
 }
 
 #messages {
   width: auto;
   height: 96%;
-  margin: 0;
-  padding: 0;
-  background-color: #d1dbde;
+  background-color: #353535;
   overflow-y: auto;
   overflow-wrap: break-word;
   justify-content: flex-end;
@@ -107,18 +151,25 @@ input {
   list-style-type: none;
 }
 
-#messages li {
+#messages.lightMode {
+  background-color: #E1E1E1;
+}
+
+li {
   padding: 2.5% 5%;
 }
 
-#messages li:nth-child(odd) {
-  background-color: #bbc9ce;
+li:nth-child(odd) {
+  background-color: #424242;
+}
+
+li:nth-child(odd).lightMode {
+  background-color: #EEEEEE;
 }
 
 #chatForm {
   width: 100%;
   height: 4%;
-  margin: 0;
 }
 
 #chatInput {
@@ -127,5 +178,5 @@ input {
 
 #chatBtn {
   width: 20%;
-  background-color: #51a9c7;
+  background-color: #2196F3;
 }

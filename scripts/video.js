@@ -138,5 +138,19 @@ socket.on("chatMessage", msg => {
 
 //Total connected
 socket.on("viewerUpdate", function (count) {
-  $viewers.text(count);
+  $viewers.text("Viewers: " + count);
 });
+
+//Toggle dark/light mode
+function toggleLightDark() {
+  let $body = $("body"),
+    $input = $("input"),
+    $viewersWrapper = $("#viewersWrapper"),
+    $messagesOdd = $("li:nth-child(odd)");
+
+  $body.toggleClass("lightMode");
+  $input.toggleClass("lightMode");
+  $viewersWrapper.toggleClass("lightMode");
+  $messages.toggleClass("lightMode");
+  $messagesOdd.toggleClass("lightMode");
+};
