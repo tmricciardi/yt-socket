@@ -94,7 +94,9 @@ input[type=submit]:active {
   position: absolute;
   top: 0;
   background-color: #282828;
+  font-weight: bold;
   text-align: center;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -106,17 +108,49 @@ input[type=submit]:active {
   width: 80%;
   height: 100%;
   color: #ef5350;
-  font-weight: bold;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
-
 }
 
 #toggleBtn {
   width: 20%;
   justify-content: center;
+}
+
+#toggleBtn.lightMode {
+  color: #282828;
+}
+
+#videoQueueWrapper {
+  width: 20%;
+  height: 4%;
+  position: absolute;
+  top: 4%;
+  border-top: .05vmax solid black;
+  border-bottom: .05vmax solid black;
+  background-color: #282828;
+  color: #d6d6d6;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#videoQueueWrapper.lightMode {
+  background-color: #d6d6d6;
+  color: #282828;
+  border-top-color: #BDBDBD;
+  border-bottom-color: #BDBDBD;
+}
+
+#videoQueueInfo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 #nameForm {

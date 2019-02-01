@@ -16,17 +16,20 @@ http.listen(port, () => {
   console.log("listening on *:" + port);
 });
 
-let userCount = 0;
-let currentVideo = "";
-let currentTime = 0;
+let userCount = 0,
+  currentVideo = "",
+  currentVideoInfo = "",
+  currentTime = 0;
 io.on("connect", socket => {
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
+  //console.log(`test ${currentVideoInfo}`);
 
   socket.on("disconnect", () => {
     io.emit("viewerUpdate", --userCount);
     console.log(`User ${socket.id} has disconnected. ${userCount} Connected.`);
+    //console.log(`test ${currentVideoInfo}`);
   });
 
   //Play
@@ -86,6 +89,12 @@ io.on("connect", socket => {
     )
   );
 
+  //Video Info
+  socket.on("videoInfoURL", videoInfoURL => {
+    currentVideoInfo = videoInfoURL;
+    io.emit("changeVideoInfo", currentVideoInfo);
+  });
+
   //New Time
   socket.on("newTime", userNewTime => {
     currentTime = userNewTime;
@@ -95,7 +104,8 @@ io.on("connect", socket => {
   socket.on("newConnection", () => {
     io.emit("connectVideo", {
       currentVideo,
-      currentTime
+      currentTime,
+      currentVideoInfo
     });
   });
 

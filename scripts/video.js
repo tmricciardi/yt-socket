@@ -7,7 +7,8 @@ const socket = io(),
   $chatForm = $("#chatForm"),
   $chatInput = $("#chatInput"),
   $messages = $("#messages"),
-  $viewers = $("#viewers");
+  $viewers = $("#viewers"),
+  $videoQueueInfo = $("#videoQueueInfo");
 
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
@@ -46,10 +47,16 @@ function onPlayerStateChange(event) {
     case 5:
       socket.emit("newConnection");
       socket.on("connectVideo", data => {
-        currentVideo = data.currentVideo;
-        currentTime = data.currentTime;
+        let currentVideo = data.currentVideo,
+          currentTime = data.currentTime,
+          currentVideoInfo = data.currentVideoInfo;
         if (event.target.getPlayerState() == 5) {
           player.loadVideoById(currentVideo, currentTime, "default");
+          $.getJSON(currentVideoInfo,
+            (data) => {
+              $videoQueueInfo.text("Now playing 🛈");
+              $videoQueueInfo.attr("title", data.title);
+            });
           console.log(currentVideo, currentTime);
         }
       });
@@ -85,15 +92,21 @@ $playForm.submit(() => {
   let idRegex2 = /(\.be\/)+([^\/]+)/;
 
   if (idRegex1.test(idInputVal)) {
-    userNewVideo = idInputVal.match(idRegex1).pop();
+    let userNewVideo = idInputVal.match(idRegex1).pop(),
+      videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
     socket.emit("newVideo", userNewVideo);
+    socket.emit("videoInfoURL", videoInfoURL);
   } else if (idRegex2.test(idInputVal)) {
-    userNewVideo = idInputVal.match(idRegex2).pop();
+    let userNewVideo = idInputVal.match(idRegex2).pop(),
+      videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
     socket.emit("newVideo", userNewVideo);
+    socket.emit("videoInfoURL", videoInfoURL);
   } else {
     if ($idInput.val()) {
-      userNewVideo = $idInput.val();
+      let userNewVideo = $idInput.val(),
+        videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
       socket.emit("newVideo", userNewVideo);
+      socket.emit("videoInfoURL", videoInfoURL);
     }
   }
 
@@ -107,6 +120,14 @@ socket.on("changeVideo", userNewVideo => {
   player.loadVideoById(userNewVideo, 0, "default");
 });
 
+socket.on("changeVideoInfo", currentVideoInfo => {
+  $.getJSON(currentVideoInfo,
+    (data) => {
+      $videoQueueInfo.text("Now playing 🛈");
+      $videoQueueInfo.attr("title", data.title);
+    });
+})
+
 //Username
 let username;
 let $currentInput = $nameInput.focus();
@@ -116,8 +137,6 @@ $nameForm.submit(() => {
 
   if (username) {
     $nameForm.fadeOut();
-    $messages.removeClass("blur");
-    $chatForm.removeClass("blur");
     $currentInput = $chatInput.focus();
   }
 });
@@ -137,7 +156,7 @@ socket.on("chatMessage", msg => {
 });
 
 //Total connected
-socket.on("viewerUpdate", function (count) {
+socket.on("viewerUpdate", count => {
   $viewers.text("Viewers: " + count);
 });
 
@@ -145,11 +164,13 @@ socket.on("viewerUpdate", function (count) {
 function toggleLightDark() {
   let $body = $("body"),
     $input = $("input"),
+    $videoQueueWrapper = $("#videoQueueWrapper"),
     $viewersWrapper = $("#viewersWrapper"),
     $messagesOdd = $("li:nth-child(odd)");
 
   $body.toggleClass("lightMode");
   $input.toggleClass("lightMode");
+  $videoQueueWrapper.toggleClass("lightMode");
   $viewersWrapper.toggleClass("lightMode");
   $messages.toggleClass("lightMode");
   $messagesOdd.toggleClass("lightMode");
