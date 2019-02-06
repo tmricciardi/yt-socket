@@ -44,7 +44,6 @@ function onPlayerStateChange(event) {
       break;
     case 2:
       socket.emit("pause");
-      break;
     case 5:
       socket.emit("newConnection");
       socket.on("connectVideo", data => {
@@ -59,11 +58,8 @@ function onPlayerStateChange(event) {
               $videoQueueInfo.attr("title", data.title);
             });
           console.log(currentVideo, currentTime);
-          break;
         }
-        break;
       });
-      break;
   }
 }
 
