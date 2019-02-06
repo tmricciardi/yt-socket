@@ -35,29 +35,17 @@ io.on("connect", socket => {
   //Play
   socket.on(
     "play",
-    debounce(
-      () => {
-        io.emit("userPlay");
-      },
-      1000, {
-        leading: true,
-        trailing: false
-      }
-    )
+    () => {
+      io.emit("userPlay");
+    }
   );
 
   //Pause
   socket.on(
     "pause",
-    debounce(
-      () => {
-        io.emit("userPause");
-      },
-      1000, {
-        leading: true,
-        trailing: false
-      }
-    )
+    () => {
+      io.emit("userPause");
+    }
   );
 
   //Sync

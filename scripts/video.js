@@ -1,5 +1,6 @@
 const socket = io(),
   $syncBtn = $("#syncBtn"),
+  $queueBtn = $("#queueBtn"),
   $playForm = $("#playForm"),
   $idInput = $("#idInput"),
   $nameForm = $("#nameForm"),
@@ -123,10 +124,41 @@ socket.on("changeVideo", userNewVideo => {
 socket.on("changeVideoInfo", currentVideoInfo => {
   $.getJSON(currentVideoInfo,
     (data) => {
-      $videoQueueInfo.text("Now playing 🛈");
+      $videoQueueInfo.text("Up Next 🛈");
       $videoQueueInfo.attr("title", data.title);
     });
-})
+});
+
+/*$queueBtn.on("click", () => {
+  let idInputVal = $idInput.val();
+  //Finds ID for https://www.youtube.com/watch?v=
+  let idRegex1 = /(\?|&)v=([^&#]+)/;
+  //Finds ID for https://youtu.be/
+  let idRegex2 = /(\.be\/)+([^\/]+)/;
+
+  if (idRegex1.test(idInputVal)) {
+    let videoQueue = idInputVal.match(idRegex1).pop(),
+      videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + videoQueue);
+    //socket.emit("newVideo", videoQueue);
+    socket.emit("videoInfoURL", videoInfoURL);
+    console.log(videoQueue);
+  } else if (idRegex2.test(idInputVal)) {
+    let videoQueue = idInputVal.match(idRegex2).pop(),
+      videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + videoQueue);
+    //socket.emit("newVideo", videoQueue);
+    socket.emit("videoInfoURL", videoInfoURL);
+    console.log(videoQueue);
+  } else {
+    if ($idInput.val()) {
+      let videoQueue = $idInput.val(),
+        videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + videoQueue);
+      //socket.emit("newVideo", videoQueue);
+      socket.emit("videoInfoURL", videoInfoURL);
+      console.log(videoQueue);
+    }
+  }
+
+});*/
 
 //Username
 let username;
