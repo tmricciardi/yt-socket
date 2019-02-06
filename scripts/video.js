@@ -42,6 +42,7 @@ function onPlayerReady(event) {
       currentVideoInfo = data.currentVideoInfo;
     if (event.target.getPlayerState() == 5) {
       player.loadVideoById(currentVideo, currentTime, "default");
+      player.playVideo();
       $.getJSON(currentVideoInfo,
         (data) => {
           $videoQueueInfo.text("Now playing 🛈");
