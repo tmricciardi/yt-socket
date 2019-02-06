@@ -19,7 +19,10 @@ http.listen(port, () => {
 let userCount = 0,
   currentVideo = "",
   currentVideoInfo = "",
-  currentTime = 0;
+  currentTime = 0,
+  //Thanks James!
+  ableToBePlayed = true;
+
 io.on("connect", socket => {
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
@@ -36,7 +39,8 @@ io.on("connect", socket => {
   socket.on(
     "play",
     () => {
-      io.emit("userPlay");
+      ableToBePlayed && io.emit("userPlay");
+      ableToBePlayed = false;
     }
   );
 
@@ -44,7 +48,8 @@ io.on("connect", socket => {
   socket.on(
     "pause",
     () => {
-      io.emit("userPause");
+      ableToBePlayed && io.emit("userPause");
+      ableToBePlayed = false;
     }
   );
 
