@@ -135,7 +135,6 @@ socket.on("changeVideoInfo", currentVideoInfo => {
   let idRegex1 = /(\?|&)v=([^&#]+)/;
   //Finds ID for https://youtu.be/
   let idRegex2 = /(\.be\/)+([^\/]+)/;
-
   if (idRegex1.test(idInputVal)) {
     let videoQueue = idInputVal.match(idRegex1).pop(),
       videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + videoQueue);
@@ -157,7 +156,6 @@ socket.on("changeVideoInfo", currentVideoInfo => {
       console.log(videoQueue);
     }
   }
-
 });*/
 
 //Username
