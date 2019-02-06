@@ -35,18 +35,40 @@ function onYouTubeIframeAPIReady() {
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
   player.stopVideo();
+  //Sync currently playing video on connection.
+  socket.on("connectVideo", data => {
+    let currentVideo = data.currentVideo,
+      currentTime = data.currentTime,
+      currentVideoInfo = data.currentVideoInfo;
+    if (event.target.getPlayerState() == 5) {
+      player.loadVideoById(currentVideo, currentTime, "default");
+      $.getJSON(currentVideoInfo,
+        (data) => {
+          $videoQueueInfo.text("Now playing 🛈");
+          $videoQueueInfo.attr("title", data.title);
+        });
+      console.log(currentVideo, currentTime);
+    }
+  });
 }
 
 function onPlayerStateChange(event) {
   switch (event.target.getPlayerState()) {
     case 1:
+      //PlayerState = Playing
       socket.emit("play");
+      console.log(event.target.getPlayerState());
       break;
     case 2:
+      //PlayerState = Paused
       socket.emit("pause");
+      console.log(event.target.getPlayerState());
+      break;
     case 5:
+      //PlayerState = Cued (What the PlayerState starts as.)
       socket.emit("newConnection");
-      socket.on("connectVideo", data => {
+      console.log(event.target.getPlayerState());
+      /*socket.on("connectVideo", data => {
         let currentVideo = data.currentVideo,
           currentTime = data.currentTime,
           currentVideoInfo = data.currentVideoInfo;
@@ -59,7 +81,7 @@ function onPlayerStateChange(event) {
             });
           console.log(currentVideo, currentTime);
         }
-      });
+      });*/
   }
 }
 
