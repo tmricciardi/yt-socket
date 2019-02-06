@@ -3,7 +3,8 @@ let express = require("express"),
   http = require("http").Server(app),
   io = require("socket.io")(http),
   port = process.env.PORT || 3000;
-const debounce = require("lodash/debounce");
+const debounce = require("lodash/debounce"),
+  throttle = require("lodash/throttle");
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -35,28 +36,19 @@ io.on("connect", socket => {
   //Play
   socket.on(
     "play",
-    debounce(
-      () => {
-        io.emit("userPlay");
-      },
-      100, {
-        leading: false,
-        trailing: true
-      }
-    )
+    () => {
+      io.emit("userPlay");
+    }
   );
 
   //Pause
   socket.on(
     "pause",
-    debounce(
+    throttle(
       () => {
         io.emit("userPause");
       },
-      100, {
-        leading: false,
-        trailing: true
-      }
+      1000
     )
   );
 
