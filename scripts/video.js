@@ -59,7 +59,9 @@ function onPlayerStateChange(event) {
               $videoQueueInfo.attr("title", data.title);
             });
           console.log(currentVideo, currentTime);
+          break;
         }
+        break;
       });
       break;
   }
