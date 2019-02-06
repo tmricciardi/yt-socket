@@ -36,19 +36,28 @@ io.on("connect", socket => {
   //Play
   socket.on(
     "play",
-    () => {
-      io.emit("userPlay");
-    }
+    debounce(
+      () => {
+        io.emit("userPlay");
+      },
+      1000, {
+        leading: true,
+        trailing: false
+      }
+    )
   );
 
   //Pause
   socket.on(
     "pause",
-    throttle(
+    debounce(
       () => {
         io.emit("userPause");
       },
-      1000
+      1000, {
+        leading: true,
+        trailing: false
+      }
     )
   );
 

@@ -61,6 +61,7 @@ function onPlayerStateChange(event) {
           console.log(currentVideo, currentTime);
         }
       });
+      break;
   }
 }
 
