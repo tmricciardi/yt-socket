@@ -38,12 +38,14 @@ function onYouTubeIframeAPIReady() {
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
+  console.log("in here xd")
   player.stopVideo();
   //Sync currently playing video on connection.
   socket.on("connectVideo", data => {
     let currentVideo = data.currentVideo,
       currentTime = data.currentTime,
       currentVideoInfo = data.currentVideoInfo;
+    console.log("in here xdddd", data)
     if (event.target.getPlayerState() == 5) {
       player.loadVideoById(currentVideo, currentTime, "default");
       player.playVideo();
@@ -153,7 +155,9 @@ socket.on("changeVideo", userNewVideo => {
   // remove p tags from the queued up videos list if they exist
   if(queuedVideoCount > 0){
     queuedVideoCount--;
-    document.getElementById(`up-next-${userNewVideo}`).remove();
+    if(document.getElementById(`up-next-${userNewVideo}`)){
+      document.getElementById(`up-next-${userNewVideo}`).remove();
+    }
     queuedVideoInfoContainer.style.display = 'none';
   }
   player.loadVideoById(userNewVideo, 0, "default");

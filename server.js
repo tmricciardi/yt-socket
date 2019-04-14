@@ -83,6 +83,7 @@ io.on("connect", socket => {
     "newVideo",
     debounce(
       userNewVideo => {
+        console.log("userNewVideo", userNewVideo)
         io.emit("changeVideo", userNewVideo);
         currentVideo = userNewVideo;
       },
@@ -142,9 +143,12 @@ io.on("connect", socket => {
   // play queued videos via arr shift (first elem in array)
   socket.on("playSyncedVideo", () => {
     const vidToPlay = videoQueue.shift();
-    currentVideo = vidToPlay;
-
-    vidToPlay && io.emit("changeVideo", vidToPlay);
+    if(vidToPlay){
+      currentVideo = vidToPlay;
+      currentTime = 0;
+      vidToPlay && io.emit("changeVideo", vidToPlay);
+      
+    }
 
   });
 }); 
