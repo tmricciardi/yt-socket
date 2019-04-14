@@ -156,6 +156,7 @@ input[type=submit]:active {
   justify-content: center;
   align-content: center;
   flex-direction: column;
+  cursor: pointer;
 }
 
 #skipBtn {
@@ -227,4 +228,38 @@ li:nth-child(odd).lightMode {
 #chatBtn {
   width: 20%;
   background-color: #2196F3;
+}
+
+#queuedVideoInfoContainer{
+  position: absolute;
+  z-index: 9999;
+  top: 9%;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 18%;
+  overflow-x: hidden;
+  margin: 6px;
+  border: 1px gold  solid;
+  min-height: 2%;
+}
+
+
+.goldenHeader{
+ color: gold;
+ font-size: 15px; 
+}
+
+#redCross{
+  color: red;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  cursor: pointer;
+}
+
+
+.white{
+  color: white;
 }

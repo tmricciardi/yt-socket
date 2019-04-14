@@ -22,6 +22,9 @@ let userCount = 0,
   currentVideoInfo = "",
   currentTime = 0;
 io.on("connect", socket => {
+
+  const videoQueue = [];
+
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
@@ -123,4 +126,24 @@ io.on("connect", socket => {
       }
     )
   );
-});
+
+
+  // queue video
+
+  socket.on("queueVideo", (userNewVideo) => {
+    if(videoQueue.includes(userNewVideo) === false){
+      videoQueue.push(userNewVideo);
+      socket.emit("successfulVideoQueue", userNewVideo)
+
+    }
+    
+  });
+
+  // play queued videos via arr shift (first elem in array)
+  socket.on("playSyncedVideo", () => {
+    const vidToPlay = videoQueue.shift();
+
+    vidToPlay && io.emit("changeVideo", vidToPlay);
+
+  });
+}); 

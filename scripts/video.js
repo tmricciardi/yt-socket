@@ -11,6 +11,8 @@ const socket = io(),
   $viewers = $("#viewers"),
   $videoQueueInfo = $("#videoQueueInfo");
 
+let queuedVideoCount = 0;
+
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
 
@@ -55,6 +57,9 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
   switch (event.target.getPlayerState()) {
+    case 0:
+      socket.emit("playSyncedVideo");
+      break;
     case 1:
       //PlayerState = Playing
       socket.emit("play");
@@ -140,6 +145,12 @@ $playForm.submit(() => {
 });
 
 socket.on("changeVideo", userNewVideo => {
+  // remove p tags from the queued up videos list if they exist
+  if(queuedVideoCount > 0){
+    queuedVideoCount--;
+    document.getElementById(`up-next-${userNewVideo}`).remove();
+    queuedVideoInfoContainer.style.display = 'none';
+  }
   player.loadVideoById(userNewVideo, 0, "default");
 });
 
@@ -185,12 +196,21 @@ let username;
 let $currentInput = $nameInput.focus();
 
 $nameForm.submit(() => {
+  // username = $nameInput.val();
   username = $nameInput.val();
 
   if (username) {
-    $nameForm.fadeOut();
-    $currentInput = $chatInput.focus();
+    $.when($nameForm.fadeOut()).done(() => {
+      // $("#chatForm").fadeIn().css("display","flex")
+      $currentInput = $chatInput.focus();
+      const chatInput = document.getElementById("chatInput");
+      chatInput.placeholder = "Send a message (Limit 140)";
+    });
   }
+
+  // if (username) {
+  //   $.when($nameForm.fadeOut()).done(() => $("#chatForm").fadeIn().css("display","flex"));
+  // }
 });
 
 //Chat
@@ -227,3 +247,58 @@ function toggleLightDark() {
   $messages.toggleClass("lightMode");
   $messagesOdd.toggleClass("lightMode");
 };
+
+
+const queueVideo = (userNewVideo) => {
+  socket.emit("queueVideo", userNewVideo);
+}
+
+socket.on("successfulVideoQueue", userNewVideo => {
+  $("#queuedVideoInfoContainer").append(`<a class='white' href='https://www.youtube.com/watch?v=${userNewVideo}' target="_blank" id='up-next-${userNewVideo}'>${userNewVideo}</a>`);
+  queuedVideoCount++;
+  videoCount.innerHTML  = `${queuedVideoCount}`;
+});
+
+
+
+$("#queueBtn").on('click', () => {
+  let idInputVal = $idInput.val();
+  //Finds ID for https://www.youtube.com/watch?v=
+  let idRegex1 = /(\?|&)v=([^&#]+)/;
+  //Finds ID for https://youtu.be/
+  let idRegex2 = /(\.be\/)+([^\/]+)/;
+
+  if (idRegex1.test(idInputVal)) {
+    const userNewVideo = idInputVal.match(idRegex1).pop();
+    const videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
+    queueVideo(userNewVideo);
+
+  } else if (idRegex2.test(idInputVal)) {
+    const userNewVideo = idInputVal.match(idRegex2).pop();
+    const videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
+    queueVideo(userNewVideo);
+  } else {
+    if ($idInput.val()) {
+      const userNewVideo = $idInput.val();
+      const videoInfoURL = ("http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3D" + userNewVideo);
+      queueVideo(userNewVideo);
+
+
+    }
+  }
+});
+
+
+$videoQueueInfo.on('click', () => {
+  const queuedVideoInfoContainer = document.getElementById('queuedVideoInfoContainer');
+  
+  if(queuedVideoCount > 0){
+    queuedVideoInfoContainer.style.display = 'flex';
+  }
+
+});
+
+
+$("#redCross").on('click', () => {
+  queuedVideoInfoContainer.style.display = 'none';
+});
