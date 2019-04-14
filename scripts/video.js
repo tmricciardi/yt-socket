@@ -45,7 +45,7 @@ function onPlayerReady(event) {
       player.playVideo();
       $.getJSON(currentVideoInfo,
         (data) => {
-          $videoQueueInfo.text("Now playing 🛈");
+          $videoQueueInfo.text("Now Playing: " + data.title);
           $videoQueueInfo.attr("title", data.title);
         });
       console.log(currentVideo, currentTime);
@@ -146,7 +146,7 @@ socket.on("changeVideo", userNewVideo => {
 socket.on("changeVideoInfo", currentVideoInfo => {
   $.getJSON(currentVideoInfo,
     (data) => {
-      $videoQueueInfo.text("Up Next 🛈");
+      $videoQueueInfo.text("Now Playing: " + data.title);
       $videoQueueInfo.attr("title", data.title);
     });
 });

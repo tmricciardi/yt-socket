@@ -13,10 +13,11 @@
             <div id="playFormWrapper" class="flex">
                 <input type="submit" id="syncBtn" value="↻" />
                 <form id="playForm" class="flex" onsubmit="return false">
-                    <input type="text" id="idInput" class="inputText" autocomplete="off" placeholder="Enter Youtube Video ID" />
+                    <input type="text" id="idInput" class="inputText" autocomplete="off"
+                        placeholder="Enter Youtube Video ID" />
                     <input type="submit" id="playBtn" value="►" />
                 </form>
-                <input type="submit" id="queueBtn" value="𝌆" />
+                <!--<input type="submit" id="queueBtn" value="𝌆" />-->
             </div>
         </div>
         <div id="chatWrapper">
@@ -25,8 +26,8 @@
                 <input type="submit" id="toggleBtn" class="flex" onclick="toggleLightDark()" value="☼" />
             </div>
             <div id="videoQueueWrapper" class="flex">
-                <div id="videoQueueInfo">Up Next</div>
-                <input type="submit" id="skipBtn" class="flex" value="⏯" />
+                <div id="videoQueueInfo">Now Playing: </div>
+                <!--<input type="submit" id="skipBtn" class="flex" value="⏯" />-->
             </div>
             <ul id="messages" class="flex"></ul>
             <div id=chatFormWrapper>
@@ -36,8 +37,8 @@
                     <input type="submit" id="nameBtn" value="⏎" />
                 </form>
                 <form id="chatForm" class="flex" onsubmit="return false">
-                    <input type="text" id="chatInput" class="inputText" autocomplete="off" placeholder="Send a message (Limit 140)"
-                        maxlength="140" />
+                    <input type="text" id="chatInput" class="inputText" autocomplete="off"
+                        placeholder="Send a message (Limit 140)" maxlength="140" />
                     <input type="submit" id="chatBtn" value="►" />
                 </form>
             </div>
