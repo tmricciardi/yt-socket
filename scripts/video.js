@@ -13,6 +13,8 @@ const socket = io(),
 
 let queuedVideoCount = 0;
 
+let fistVisit = true;
+
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
 
@@ -50,7 +52,6 @@ function onPlayerReady(event) {
           $videoQueueInfo.text("Now playing 🛈");
           $videoQueueInfo.attr("title", data.title);
         });
-      console.log(currentVideo, currentTime);
     }
   });
 }
@@ -58,7 +59,11 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
   switch (event.target.getPlayerState()) {
     case 0:
-      socket.emit("playSyncedVideo");
+      console.log("fistVisit", fistVisit)
+      if(fistVisit === false){
+        socket.emit("playSyncedVideo");
+      }
+      console.log("first visit")
       break;
     case 1:
       //PlayerState = Playing
@@ -73,7 +78,7 @@ function onPlayerStateChange(event) {
     case 5:
       //PlayerState = Cued (What the PlayerState starts as.)
       socket.emit("newConnection");
-      console.log(event.target.getPlayerState());
+      fistVisit = false;
       /*socket.on("connectVideo", data => {
         let currentVideo = data.currentVideo,
           currentTime = data.currentTime,

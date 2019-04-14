@@ -142,6 +142,7 @@ io.on("connect", socket => {
   // play queued videos via arr shift (first elem in array)
   socket.on("playSyncedVideo", () => {
     const vidToPlay = videoQueue.shift();
+    currentVideo = vidToPlay;
 
     vidToPlay && io.emit("changeVideo", vidToPlay);
 
