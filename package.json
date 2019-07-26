@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "Web page that syncs youtube videos to users in real time.",
   "dependencies": {
-    "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
     "socket.io": "^2.2.0",
-    "updates": "^8.0.1"
+    "updates": "^8.5.1"
   }
 }

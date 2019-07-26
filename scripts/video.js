@@ -136,7 +136,7 @@ $playForm.submit(() => {
   setInterval(() => {
     let userNewTime = player.getCurrentTime();
     socket.emit("newTime", userNewTime);
-  }, 1000);
+  }, 100);
 });
 
 socket.on("changeVideo", userNewVideo => {

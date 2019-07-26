@@ -36,57 +36,45 @@ io.on("connect", socket => {
   //Play
   socket.on(
     "play",
-    debounce(
+    throttle(
       () => {
         io.emit("userPlay");
       },
-      1000, {
-        leading: true,
-        trailing: false
-      }
+      100
     )
   );
 
   //Pause
   socket.on(
     "pause",
-    debounce(
+    throttle(
       () => {
         io.emit("userPause");
       },
-      1000, {
-        leading: true,
-        trailing: false
-      }
+      100
     )
   );
 
   //Sync
   socket.on(
     "sync",
-    debounce(
+    throttle(
       userTime => {
         io.emit("userSync", userTime);
       },
-      1000, {
-        leading: true,
-        trailing: false
-      }
+      100
     )
   );
 
   //New Video
   socket.on(
     "newVideo",
-    debounce(
+    throttle(
       userNewVideo => {
         io.emit("changeVideo", userNewVideo);
         currentVideo = userNewVideo;
       },
-      1000, {
-        leading: true,
-        trailing: false
-      }
+      100
     )
   );
 
