@@ -106,6 +106,11 @@ socket.on("userSync", userTime => {
   player.seekTo(userTime);
 });
 
+socket.on("slowDown", userTime => {
+  console.log("slow down bucko")
+});
+
+
 //New Video
 $playForm.submit(() => {
   let idInputVal = $idInput.val();

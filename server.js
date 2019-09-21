@@ -21,11 +21,39 @@ let userCount = 0,
   currentVideo = "",
   currentVideoInfo = "",
   currentTime = 0;
+
+
+// an obj of objs containing the user's socket id as the outer obj key. inner obj has two keys, 
+// playerCount and pauseCount with values inc'd on socket.on('play') and socket.on('pause)
+const userObj = {};
+
+// a global const which represents the amount of times a user can play/pause before they get ignored
+const RATE_LIMIT = 3;
+
+
 io.on("connect", socket => {
+  const userID = socket.id;
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
   //console.log(`test ${currentVideoInfo}`);
+  userObj[userID] = {
+    playCount: 0,
+    pauseCount: 0,
+  };
+  console.log("after new connect, userObj: ", userObj)
+
+
+  // every 30 seconds, give everyone a clean slate
+  setInterval(function() {
+    //iterate over userObj and set everyones play/pause value to 0
+    Object.keys(userObj).forEach(userKey => {
+      userObj[userKey]['playCount'] = 0;
+      userObj[userKey]['pauseCount'] = 0;
+    });
+    console.log("after cleaning", userObj)
+  }, 30000)
+
 
   socket.on("disconnect", () => {
     io.emit("viewerUpdate", --userCount);
@@ -38,7 +66,19 @@ io.on("connect", socket => {
     "play",
     throttle(
       () => {
-        io.emit("userPlay");
+        console.log('socket id',userID)
+        if(userObj[userID]){
+          console.log("userDoingStuff", userObj[userID])
+          userObj[userID]['playCount'] += 1;
+          console.log("after inc", userObj[userID])
+          if(userObj[userID]['playCount'] < RATE_LIMIT){
+            console.log("user  hasnt played in awhile, let them play")
+            io.emit("userPlay");
+
+          }else{
+            io.emit('slowDown')
+          }
+        }
       },
       100
     )
@@ -49,7 +89,19 @@ io.on("connect", socket => {
     "pause",
     throttle(
       () => {
-        io.emit("userPause");
+        console.log('socket id',userID);
+        if(userObj[userID]){
+          console.log("userDoingStuff", userObj[userID])
+          userObj[userID]['pauseCount'] += 1;
+          console.log("after inc", userObj[userID])
+          if(userObj[userID]['pauseCount'] < RATE_LIMIT){
+            console.log("user  hasnt paused in awhile, let them pause")
+            io.emit("userPause");
+
+          }else{
+            io.emit('slowDown')
+          }
+        }
       },
       100
     )
