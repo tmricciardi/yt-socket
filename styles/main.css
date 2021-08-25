@@ -175,7 +175,7 @@ input[type=submit]:active {
   overflow-y: auto;
   overflow-wrap: break-word;
   justify-content: flex-end;
-  flex-direction: column;
+  flex-direction: column-reverse;
   list-style-type: none;
 }
 
