@@ -23,8 +23,8 @@ input {
 }
 
 input.lightMode {
-  background-color: #d6d6d6;
-  color: #282828;
+  background-color: #green;
+  color: #green;
 }
 
 input:hover {
