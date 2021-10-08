@@ -106,7 +106,7 @@ input[type=submit]:active {
 }
 
 #viewersWrapper.lightMode {
-  background-color: #d6d6d6;
+  background-color: green;
 }
 
 #viewers {
@@ -125,7 +125,7 @@ input[type=submit]:active {
 }
 
 #toggleBtn.lightMode {
-  color: #282828;
+  color: green;
 }
 
 #videoQueueWrapper {
@@ -144,10 +144,10 @@ input[type=submit]:active {
 }
 
 #videoQueueWrapper.lightMode {
-  background-color: #d6d6d6;
-  color: #282828;
-  border-top-color: #BDBDBD;
-  border-bottom-color: #BDBDBD;
+  background-color: green;
+  color: green;
+  border-top-color: green;
+  border-bottom-color:green;
 }
 
 #videoQueueInfo {
