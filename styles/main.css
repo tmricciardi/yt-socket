@@ -180,7 +180,7 @@ input[type=submit]:active {
 }
 
 #messages.lightMode {
-  background-color: #E1E1E1;
+  background-color: green;
 }
 
 li {
