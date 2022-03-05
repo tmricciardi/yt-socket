@@ -11,6 +11,7 @@ const socket = io(),
   $viewers = $("#viewers"),
   $videoQueueInfo = $("#videoQueueInfo");
 
+console.log("test")
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
 
