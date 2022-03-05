@@ -215,7 +215,7 @@ socket.on("chatMessage", msg => {
 
 //Total connected
 socket.on("viewerUpdate", count => {
-  $viewers.text("Viewers: " + count);
+  $viewers.text("Boys: " + count);
 });
 
 //Toggle dark/light mode
