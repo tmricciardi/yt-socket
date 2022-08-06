@@ -70,7 +70,7 @@ function onPlayerStateChange(event) {
       //PlayerState = Cued (What the PlayerState starts as.)
       socket.emit("newConnection");
       console.log(event.target.getPlayerState());
-      /*socket.on("connectVideo", data => {
+      socket.on("connectVideo", data => {
         let currentVideo = data.currentVideo,
           currentTime = data.currentTime,
           currentVideoInfo = data.currentVideoInfo;
@@ -83,7 +83,7 @@ function onPlayerStateChange(event) {
             });
           console.log(currentVideo, currentTime);
         }
-      });*/
+      });
   }
 }
 
