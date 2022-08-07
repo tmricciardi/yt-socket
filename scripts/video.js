@@ -35,6 +35,7 @@ function onYouTubeIframeAPIReady() {
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
+  console.log("onPlayerReady: ", event.target.getPlayerState())
   player.stopVideo();
   //Sync currently playing video on connection.
   socket.on("connectVideo", data => {
@@ -55,6 +56,7 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
+  console.log("player state: event.target.getPlayerState(): ", event.target.getPlayerState())
   switch (event.target.getPlayerState()) {
     case 1:
       //PlayerState = Playing
