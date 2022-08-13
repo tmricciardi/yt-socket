@@ -37,7 +37,6 @@ function onYouTubeIframeAPIReady() {
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
   console.log("onPlayerReady: ", event.target.getPlayerState())
-  // player.stopVideo();
   socket.emit('newUserJoined')
 }
 
@@ -57,7 +56,6 @@ socket.on("syncNewUser", data => {
         $videoQueueInfo.attr("title", data.title);
       });
     console.log(currentVideo, currentTime);
-  // }
 });
 
 function onPlayerStateChange(event) {
@@ -117,14 +115,6 @@ socket.on("userSync", userTime => {
 socket.on("slowDown", userTime => {
   console.log("slow down bucko")
 });
-
-
-// socket.on("newUserJoin", userNewVideo => {
-//   // console.log("im a new user and i wanan play this video: ", userNewVideo)
-//   // player = onYouTubeIframeAPIReady()
-//   // player.playVideo()
-
-// });
 
 //New Video
 $playForm.submit(() => {

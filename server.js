@@ -46,15 +46,6 @@ io.on("connect", socket => {
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${userID} has connected. ${userCount} Connected.`);
-  //console.log(`test ${currentVideoInfo}`);
-  // if(userID in userObj === false){
-  //   console.log(`emitting newUserJoin for user ${userID} with value ${currentVideo}`)
-  //  io.emit("newUserJoin", {
-  //   currentVideo,
-  //   currentTime,
-  //   currentVideoInfo
-  // }); 
-  // }
   userObj[userID] = {
     playCount: 0,
     pauseCount: 0,
