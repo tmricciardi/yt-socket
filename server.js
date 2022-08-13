@@ -22,7 +22,10 @@ let userCount = 0,
   currentVideoInfo = "",
   currentTime = 0;
 
-
+// every 30 seconds, give everyone a clean slate
+setInterval(function() {
+  currentTime += 1
+}, 1000)
 // every 30 seconds, give everyone a clean slate
 setInterval(function() {
   //iterate over userObj and set everyones play/pause value to 0
@@ -72,6 +75,7 @@ io.on("connect", socket => {
           if(userObj[userID]['playCount'] < RATE_LIMIT){
             console.log("user  hasnt played in awhile, let them play")
             io.emit("userPlay");
+            currentTime = 0
 
           }else{
             io.emit('slowDown')
@@ -111,6 +115,7 @@ io.on("connect", socket => {
     throttle(
       userTime => {
         io.emit("userSync", userTime);
+        currentTime = userTime
       },
       100
     )
