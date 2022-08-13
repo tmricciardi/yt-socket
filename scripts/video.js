@@ -15,9 +15,9 @@ console.log("test")
 //https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 var tag = document.createElement("script");
 
-// tag.src = "https://www.youtube.com/iframe_api";
-// var firstScriptTag = document.getElementsByTagName("script")[0];
-// firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName("script")[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 var player;
 
@@ -31,6 +31,7 @@ function onYouTubeIframeAPIReady() {
       onStateChange: onPlayerStateChange
     }
   });
+  return player
 }
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
@@ -38,7 +39,8 @@ function onPlayerReady(event) {
   console.log("onPlayerReady: ", event.target.getPlayerState())
   player.stopVideo();
   //Sync currently playing video on connection.
-  socket.on("connectVideo", data => {
+  socket.on("newUserJoin", data => {
+    console.log("new use rjoining", data)
     let currentVideo = data.currentVideo,
       currentTime = data.currentTime,
       currentVideoInfo = data.currentVideoInfo;
@@ -114,6 +116,13 @@ socket.on("slowDown", userTime => {
 });
 
 
+// socket.on("newUserJoin", userNewVideo => {
+//   // console.log("im a new user and i wanan play this video: ", userNewVideo)
+//   // player = onYouTubeIframeAPIReady()
+//   // player.playVideo()
+
+// });
+
 //New Video
 $playForm.submit(() => {
   let idInputVal = $idInput.val();
@@ -149,7 +158,7 @@ $playForm.submit(() => {
 
 socket.on("changeVideo", userNewVideo => {
   console.log(`on changeVideo event, changing video:: ${userNewVideo}`)
-  onYouTubeIframeAPIReady()
+  // onYouTubeIframeAPIReady()
   player.loadVideoById(userNewVideo, 0, "default");
 });
 

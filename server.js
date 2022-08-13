@@ -23,6 +23,16 @@ let userCount = 0,
   currentTime = 0;
 
 
+// every 30 seconds, give everyone a clean slate
+setInterval(function() {
+  //iterate over userObj and set everyones play/pause value to 0
+  Object.keys(userObj).forEach(userKey => {
+    userObj[userKey]['playCount'] = 0;
+    userObj[userKey]['pauseCount'] = 0;
+  });
+  console.log("after cleaning", userObj)
+}, 30000)
+
 // an obj of objs containing the user's socket id as the outer obj key. inner obj has two keys, 
 // playerCount and pauseCount with values inc'd on socket.on('play') and socket.on('pause)
 const userObj = {};
@@ -38,25 +48,18 @@ io.on("connect", socket => {
   console.log(`User ${userID} has connected. ${userCount} Connected.`);
   //console.log(`test ${currentVideoInfo}`);
   if(userID in userObj === false){
-    console.log(`emitting changeVideo for user ${userID} with value ${currentVideo}`)
-   io.emit("changeVideo", currentVideo); 
+    console.log(`emitting newUserJoin for user ${userID} with value ${currentVideo}`)
+   io.emit("newUserJoin", {
+    currentVideo,
+    currentTime,
+    currentVideoInfo
+  }); 
   }
   userObj[userID] = {
     playCount: 0,
     pauseCount: 0,
   };
   console.log("after new connect, userObj: ", userObj)
-
-
-  // every 30 seconds, give everyone a clean slate
-  setInterval(function() {
-    //iterate over userObj and set everyones play/pause value to 0
-    Object.keys(userObj).forEach(userKey => {
-      userObj[userKey]['playCount'] = 0;
-      userObj[userKey]['pauseCount'] = 0;
-    });
-    console.log("after cleaning", userObj)
-  }, 30000)
 
 
   socket.on("disconnect", () => {
