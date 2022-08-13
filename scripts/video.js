@@ -19,38 +19,45 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var player = new YT.Player("player", {
-  height: "100%",
-  width: "100%",
-  videoId: "asdf",
-  events: {
-    onReady: onPlayerReady,
-    onStateChange: onPlayerStateChange
-  }
-});
+var player;
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player("player", {
+    height: "100%",
+    width: "100%",
+    // videoId: "asdf",
+    events: {
+      onReady: onPlayerReady,
+      onStateChange: onPlayerStateChange
+    }
+  });
+  return player
+}
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
   console.log("onPlayerReady: ", event.target.getPlayerState())
-  player.stopVideo();
-  //Sync currently playing video on connection.
-  socket.on("newUserJoin", data => {
-    console.log("new use rjoining", data)
-    let currentVideo = data.currentVideo,
-      currentTime = data.currentTime,
-      currentVideoInfo = data.currentVideoInfo;
-    if (event.target.getPlayerState() == 5) {
-      player.loadVideoById(currentVideo, currentTime, "default");
-      player.playVideo();
-      $.getJSON(currentVideoInfo,
-        (data) => {
-          $videoQueueInfo.text("Now Playing: " + data.title);
-          $videoQueueInfo.attr("title", data.title);
-        });
-      console.log(currentVideo, currentTime);
-    }
-  });
+  // player.stopVideo();
 }
+
+
+//Sync currently playing video on connection.
+socket.on("newUserJoin", data => {
+  console.log("new use rjoining", data)
+  let currentVideo = data.currentVideo,
+    currentTime = data.currentTime,
+    currentVideoInfo = data.currentVideoInfo;
+  if (event.target.getPlayerState() == 5) {
+    player.loadVideoById(currentVideo, currentTime, "default");
+    player.playVideo();
+    $.getJSON(currentVideoInfo,
+      (data) => {
+        $videoQueueInfo.text("Now Playing: " + data.title);
+        $videoQueueInfo.attr("title", data.title);
+      });
+    console.log(currentVideo, currentTime);
+  }
+});
 
 function onPlayerStateChange(event) {
   console.log("player state: event.target.getPlayerState(): ", event.target.getPlayerState())
