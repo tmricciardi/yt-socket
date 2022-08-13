@@ -148,6 +148,7 @@ $playForm.submit(() => {
 });
 
 socket.on("changeVideo", userNewVideo => {
+  console.log(`on changeVideo event, changing video:: ${userNewVideo}`)
   player.loadVideoById(userNewVideo, 0, "default");
 });
 
