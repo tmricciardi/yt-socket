@@ -47,7 +47,7 @@ socket.on("newUserJoin", data => {
   let currentVideo = data.currentVideo,
     currentTime = data.currentTime,
     currentVideoInfo = data.currentVideoInfo;
-  if (event.target.getPlayerState() == 5) {
+  // if (event.target.getPlayerState() == 5) {
     player.loadVideoById(currentVideo, currentTime, "default");
     player.playVideo();
     $.getJSON(currentVideoInfo,
@@ -56,7 +56,7 @@ socket.on("newUserJoin", data => {
         $videoQueueInfo.attr("title", data.title);
       });
     console.log(currentVideo, currentTime);
-  }
+  // }
 });
 
 function onPlayerStateChange(event) {
