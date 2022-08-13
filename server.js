@@ -35,9 +35,10 @@ io.on("connect", socket => {
   const userID = socket.id;
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
-  console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
+  console.log(`User ${userID} has connected. ${userCount} Connected.`);
   //console.log(`test ${currentVideoInfo}`);
   if(!userID in userObj){
+    console.log(`emitting changeVideo for user ${userID} with value ${userNewVideo}`)
    io.emit("changeVideo", userNewVideo); 
   }
   userObj[userID] = {
