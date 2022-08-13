@@ -38,11 +38,12 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
   console.log("onPlayerReady: ", event.target.getPlayerState())
   // player.stopVideo();
+  socket.emit('newUserJoined')
 }
 
 
 //Sync currently playing video on connection.
-socket.on("newUserJoin", data => {
+socket.on("syncNewUser", data => {
   console.log("new use rjoining", data)
   let currentVideo = data.currentVideo,
     currentTime = data.currentTime,

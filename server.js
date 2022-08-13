@@ -47,14 +47,14 @@ io.on("connect", socket => {
   io.emit("viewerUpdate", ++userCount);
   console.log(`User ${userID} has connected. ${userCount} Connected.`);
   //console.log(`test ${currentVideoInfo}`);
-  if(userID in userObj === false){
-    console.log(`emitting newUserJoin for user ${userID} with value ${currentVideo}`)
-   io.emit("newUserJoin", {
-    currentVideo,
-    currentTime,
-    currentVideoInfo
-  }); 
-  }
+  // if(userID in userObj === false){
+  //   console.log(`emitting newUserJoin for user ${userID} with value ${currentVideo}`)
+  //  io.emit("newUserJoin", {
+  //   currentVideo,
+  //   currentTime,
+  //   currentVideoInfo
+  // }); 
+  // }
   userObj[userID] = {
     playCount: 0,
     pauseCount: 0,
@@ -170,4 +170,14 @@ io.on("connect", socket => {
       }
     )
   );
+
+  socket.on(
+    "newUserJoined", () => {
+      io.emit("syncNewUser", {
+        currentVideo,
+        currentTime,
+        currentVideoInfo
+      }); 
+    }
+  )
 });
