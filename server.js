@@ -22,6 +22,19 @@ let userCount = 0,
   currentVideoInfo = "",
   currentTime = 0;
 
+// every 30 seconds, give everyone a clean slate
+setInterval(function() {
+  currentTime += 1
+}, 1000)
+// every 30 seconds, give everyone a clean slate
+setInterval(function() {
+  //iterate over userObj and set everyones play/pause value to 0
+  Object.keys(userObj).forEach(userKey => {
+    userObj[userKey]['playCount'] = 0;
+    userObj[userKey]['pauseCount'] = 0;
+  });
+  console.log("after cleaning", userObj)
+}, 30000)
 
 // an obj of objs containing the user's socket id as the outer obj key. inner obj has two keys, 
 // playerCount and pauseCount with values inc'd on socket.on('play') and socket.on('pause)
@@ -35,24 +48,12 @@ io.on("connect", socket => {
   const userID = socket.id;
   //Viewer Count
   io.emit("viewerUpdate", ++userCount);
-  console.log(`User ${socket.id} has connected. ${userCount} Connected.`);
-  //console.log(`test ${currentVideoInfo}`);
+  console.log(`User ${userID} has connected. ${userCount} Connected.`);
   userObj[userID] = {
     playCount: 0,
     pauseCount: 0,
   };
   console.log("after new connect, userObj: ", userObj)
-
-
-  // every 30 seconds, give everyone a clean slate
-  setInterval(function() {
-    //iterate over userObj and set everyones play/pause value to 0
-    Object.keys(userObj).forEach(userKey => {
-      userObj[userKey]['playCount'] = 0;
-      userObj[userKey]['pauseCount'] = 0;
-    });
-    console.log("after cleaning", userObj)
-  }, 30000)
 
 
   socket.on("disconnect", () => {
@@ -74,6 +75,7 @@ io.on("connect", socket => {
           if(userObj[userID]['playCount'] < RATE_LIMIT){
             console.log("user  hasnt played in awhile, let them play")
             io.emit("userPlay");
+            currentTime = 0
 
           }else{
             io.emit('slowDown')
@@ -113,6 +115,7 @@ io.on("connect", socket => {
     throttle(
       userTime => {
         io.emit("userSync", userTime);
+        currentTime = userTime
       },
       100
     )
@@ -163,4 +166,14 @@ io.on("connect", socket => {
       }
     )
   );
+
+  socket.on(
+    "newUserJoined", () => {
+      io.emit("syncNewUser", {
+        currentVideo,
+        currentTime,
+        currentVideoInfo
+      }); 
+    }
+  )
 });

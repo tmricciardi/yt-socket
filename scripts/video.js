@@ -25,35 +25,38 @@ function onYouTubeIframeAPIReady() {
   player = new YT.Player("player", {
     height: "100%",
     width: "100%",
-    videoId: "asdf",
+    // videoId: "asdf",
     events: {
       onReady: onPlayerReady,
       onStateChange: onPlayerStateChange
     }
   });
+  return player
 }
 
 //https://developers.google.com/youtube/iframe_api_reference#Events
 function onPlayerReady(event) {
   console.log("onPlayerReady: ", event.target.getPlayerState())
-  player.stopVideo();
-  //Sync currently playing video on connection.
-  socket.on("connectVideo", data => {
-    let currentVideo = data.currentVideo,
-      currentTime = data.currentTime,
-      currentVideoInfo = data.currentVideoInfo;
-    if (event.target.getPlayerState() == 5) {
-      player.loadVideoById(currentVideo, currentTime, "default");
-      player.playVideo();
-      $.getJSON(currentVideoInfo,
-        (data) => {
-          $videoQueueInfo.text("Now Playing: " + data.title);
-          $videoQueueInfo.attr("title", data.title);
-        });
-      console.log(currentVideo, currentTime);
-    }
-  });
+  socket.emit('newUserJoined')
 }
+
+
+//Sync currently playing video on connection.
+socket.on("syncNewUser", data => {
+  console.log("new use rjoining", data)
+  let currentVideo = data.currentVideo,
+    currentTime = data.currentTime,
+    currentVideoInfo = data.currentVideoInfo;
+  // if (event.target.getPlayerState() == 5) {
+    player.loadVideoById(currentVideo, currentTime, "default");
+    player.playVideo();
+    $.getJSON(currentVideoInfo,
+      (data) => {
+        $videoQueueInfo.text("Now Playing: " + data.title);
+        $videoQueueInfo.attr("title", data.title);
+      });
+    console.log(currentVideo, currentTime);
+});
 
 function onPlayerStateChange(event) {
   console.log("player state: event.target.getPlayerState(): ", event.target.getPlayerState())
@@ -113,7 +116,6 @@ socket.on("slowDown", userTime => {
   console.log("slow down bucko")
 });
 
-
 //New Video
 $playForm.submit(() => {
   let idInputVal = $idInput.val();
@@ -148,6 +150,8 @@ $playForm.submit(() => {
 });
 
 socket.on("changeVideo", userNewVideo => {
+  console.log(`on changeVideo event, changing video:: ${userNewVideo}`)
+  // onYouTubeIframeAPIReady()
   player.loadVideoById(userNewVideo, 0, "default");
 });
 
